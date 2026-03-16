@@ -1,0 +1,2 @@
+# cat=basic; type=string; label=Background color for editable pages
+highlightColor = rgba(0, 255, 0, 0.1)

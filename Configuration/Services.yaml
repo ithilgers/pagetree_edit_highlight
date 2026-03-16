@@ -1,0 +1,18 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Ithilgers\PagetreeEditHighlight\:
+    resource: '../Classes/*'
+
+  Ithilgers\PagetreeEditHighlight\EventListener\PageTreeItemsListener:
+    tags:
+      - name: event.listener
+        event: TYPO3\CMS\Backend\Controller\Event\AfterPageTreeItemsPreparedEvent
+
+  Ithilgers\PagetreeEditHighlight\EventListener\BackendTemplateListener:
+    tags:
+      - name: event.listener
+        event: TYPO3\CMS\Backend\Controller\Event\AfterBackendPageRenderEvent

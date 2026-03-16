@@ -1,0 +1,35 @@
+{
+    "name": "ithilgers/pagetree-edit-highlight",
+    "type": "typo3-cms-extension",
+    "description": "Highlights pages in the backend page tree where the user has content editing permissions",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Theodor Hilgers",
+            "role": "Developer"
+        }
+    ],
+    "keywords": [
+        "TYPO3",
+        "extension",
+        "pagetree",
+        "permissions",
+        "backend",
+        "highlight",
+        "editor"
+    ],
+    "require": {
+        "typo3/cms-core": "^12.4",
+        "typo3/cms-backend": "^12.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ithilgers\\PagetreeEditHighlight\\": "Classes/"
+        }
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "pagetree_edit_highlight"
+        }
+    }
+}
