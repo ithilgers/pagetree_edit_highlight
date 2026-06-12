@@ -11,6 +11,7 @@ Visual highlighting of pages in the TYPO3 backend page tree where the current us
 
 - **Visual Feedback**: Highlights pages with a customizable background color where the user has content editing rights
 - **Filter Toggle**: Dropdown menu item "Editable pages only" in the page tree to filter down to editable pages only, with bridge nodes keeping the tree structure intact
+- **Finds Hidden Pages**: When the filter is active, editable pages are found even in collapsed branches of the tree, independent of the currently expanded state
 - **Localized**: Full English and German translations, respects TYPO3 backend language setting
 - **Permission-Aware**: Only shows highlights based on actual user permissions
 - **Admin-Optimized**: Skips highlighting for admin users (who have all permissions anyway)
@@ -85,13 +86,18 @@ The extension uses TYPO3's PSR-14 event system:
 - Applies background color to permitted pages
 - Skips processing for admin users
 
+When the filter is **inactive**, only the prepared (lazy-loaded) items are colorized — a lightweight per-item check. When the filter is **active**, the `PermittedPagesResolver` queries every editable page directly from the database and rebuilds the item list so editable pages are shown even when their branch is collapsed. The resolver runs a single permission query (via `getPagePermsClause`), walks ancestors level by level (one query per tree depth) to build bridge nodes, and caches its result per user for the request.
+
 ### Architecture
 
 ```
 Classes/
-└── EventListener/
-    ├── BackendTemplateListener.php  # Loads JS module in backend
-    └── PageTreeItemsListener.php    # Main event listener
+├── EventListener/
+│   ├── BackendTemplateListener.php  # Loads JS module in backend
+│   └── PageTreeItemsListener.php    # Main event listener
+└── Service/
+    ├── PermittedPagesResolver.php   # Resolves editable pages + bridge nodes from DB
+    └── PageTreeItemFactory.php      # Builds tree items for non-lazy-loaded pages
 
 Configuration/
 ├── JavaScriptModules.php            # ES6 module registration
@@ -115,7 +121,7 @@ composer.json                       # Composer metadata
 
 | TYPO3 Version | Extension Version | Support |
 |---------------|-------------------|---------|
-| 12.4 LTS      | 1.0.x            | ✅ Active |
+| 12.4 LTS      | 1.0.x, 1.1.x     | ✅ Active |
 
 ## Contributing
 
@@ -135,7 +141,7 @@ This extension is licensed under the [GNU General Public License v2.0 or later](
 
 For bugs, feature requests, or questions:
 
-- Open an issue on GitHub: https://github.com/ithilgers/pagetree-edit-highlight
+- Open an issue on GitHub: https://github.com/ithilgers/pagetree_edit_highlight
 
 ## Credits
 
